@@ -2,10 +2,10 @@ package twarc
 
 import (
 	"encoding/json"
-	"github.com/tidwall/gjson"
-	"log"
-
 	. "github.com/knaka/go-utils"
+	"github.com/tidwall/gjson"
+	"strconv"
+	"time"
 )
 
 type URL struct {
@@ -24,27 +24,34 @@ type Entities struct {
 	Media []Media `json:"media"`
 }
 
-type Legacy struct {
-	IDStr                string   `json:"id_str"`
-	FullText             string   `json:"full_text"`
-	InReplyToStatusIDStr string   `json:"in_reply_to_status_id_str"`
-	Entities             Entities `json:"entities"`
-}
-
 type Tweet struct {
-	RestID string `json:"rest_id"`
-	Legacy Legacy `json:"legacy"`
+	IDStr                string `json:"id_str"`
+	ID                   int64
+	FullText             string `json:"full_text"`
+	InReplyToStatusIDStr string `json:"in_reply_to_status_id_str"`
+	InReplyToStatusID    int64
+	Entities             Entities `json:"entities"`
+	UserIDStr            string   `json:"user_id_str"`
+	UserID               int64
+	CreatedAtRuby        string `json:"created_at"`
+	CreatedAt            time.Time
 }
 
-type Tweets []Tweet
-
-func extractTweets(jsonStr string) (tweets []Tweet) {
-	result := gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.0.entries.#.content.itemContent.tweet_results.result|@flatten`).String()
+func ExtractTweets(jsonStr string) (tweets []Tweet, err error) {
+	defer Catch(&err)
+	result := gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
 	V0(json.Unmarshal([]byte(result), &tweets))
-	result = gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.0.entries.#.content.items.#.item.itemContent.tweet_results.result|@flatten`).String()
+	result = gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
 	var conversationTweets []Tweet
 	V0(json.Unmarshal([]byte(result), &conversationTweets))
 	tweets = append(tweets, conversationTweets...)
-	log.Println(tweets)
+	for i, tweet := range tweets {
+		tweets[i].ID = V(strconv.ParseInt(tweet.IDStr, 10, 64))
+		tweets[i].UserID = V(strconv.ParseInt(tweet.UserIDStr, 10, 64))
+		tweets[i].CreatedAt = V(time.Parse(time.RubyDate, tweet.CreatedAtRuby))
+		if tweet.InReplyToStatusIDStr != "" {
+			tweets[i].InReplyToStatusID = V(strconv.ParseInt(tweet.InReplyToStatusIDStr, 10, 64))
+		}
+	}
 	return
 }

@@ -5,8 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"github.com/chromedp/cdproto/browser"
+	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
+	"github.com/knaka/twarc"
 	"log"
 	"os"
 	"strings"
@@ -22,12 +24,6 @@ func Main(timeout time.Duration, headless, verbose bool) (err error) {
 	if verbose {
 		opts = append(opts, chromedp.WithDebugf(log.Printf))
 	}
-	//ctx, cancel := chromedp.NewExecAllocator(context.Background(),
-	//	chromedp.Flag("headless", headless),
-	//	chromedp.ExecPath("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),
-	//	chromedp.UserDataDir(""),
-	//	chromedp.Flag("new-window", true),
-	//)
 	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), "ws://127.0.0.1:9222")
 	defer cancel()
 	ctx, cancel = chromedp.NewContext(ctx, opts...)
@@ -35,7 +31,7 @@ func Main(timeout time.Duration, headless, verbose bool) (err error) {
 	ctx, cancel = context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	ch, errch := make(chan string, 1), make(chan error, 1)
+	ch, errCh := make(chan string, 1), make(chan error, 1)
 	urls := make(map[network.RequestID]string)
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
 		if verbose {
@@ -47,10 +43,27 @@ func Main(timeout time.Duration, headless, verbose bool) (err error) {
 			if strings.Contains(url, "/UserTweets?") {
 				urls[event.RequestID] = url
 			}
-		case *network.EventDataReceived:
-			if url, ok := urls[event.RequestID]; ok {
-				log.Println("efa761a", url)
+		//case *network.EventResponseReceived:
+		case *network.EventLoadingFinished:
+			//case *network.EventDataReceived:
+			//log.Println(event.Data)
+			if _, ok := urls[event.RequestID]; ok {
+				fc := chromedp.FromContext(ctx)
+				ctx := cdp.WithExecutor(ctx, fc.Target)
+				go func() {
+					byts, err := network.GetResponseBody(event.RequestID).Do(ctx)
+					if err != nil {
+						panic(err)
+					}
+					data := string(byts)
+					tweets := V(twarc.ExtractTweets(data))
+					for _, tweet := range tweets {
+						log.Println(tweet.CreatedAt, tweet.FullText)
+					}
+				}()
 			}
+		//case *network.EventLoadingFinished:
+		//	event.
 		case *browser.EventDownloadProgress:
 			log.Println("d2666c4", event.State)
 		}
@@ -58,14 +71,14 @@ func Main(timeout time.Duration, headless, verbose bool) (err error) {
 
 	go func() {
 		if err := chromedp.Run(ctx, chromedp.Navigate("https://x.com/knaka")); err != nil {
-			errch <- err
+			errCh <- err
 		}
 	}()
 
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
-	case err := <-errch:
+	case err := <-errCh:
 		return err
 	case res := <-ch:
 		V0(fmt.Fprintln(os.Stdout, res))
