@@ -1,11 +1,25 @@
 package twarc
 
 import (
+	"context"
 	"encoding/json"
-	. "github.com/knaka/go-utils"
+	"fmt"
+	"github.com/chromedp/cdproto/cdp"
+	"github.com/chromedp/cdproto/network"
+	"github.com/chromedp/cdproto/target"
+	"github.com/chromedp/chromedp"
 	"github.com/tidwall/gjson"
+	"log"
+	neturl "net/url"
+	"reflect"
+	"regexp"
+	"slices"
+	"sort"
 	"strconv"
+	"sync"
 	"time"
+
+	. "github.com/knaka/go-utils"
 )
 
 type URL struct {
@@ -19,58 +33,253 @@ type Media struct {
 	MediaURLHTTPS string `json:"media_url_https"`
 }
 
+type Hashtag struct {
+	Text string `json:"text"`
+}
+
 type Entities struct {
-	URLs  []URL   `json:"urls"`
-	Media []Media `json:"media"`
+	URLs     []URL     `json:"urls"`
+	Media    []Media   `json:"media"`
+	Hashtags []Hashtag `json:"hashtags"`
 }
 
+// Tweet represents a tweet.
 type Tweet struct {
+	ID                int64
+	FullText          string `json:"full_text"`
+	Lang              string `json:"lang"`
+	BookmarkCount     int    `json:"bookmark_count"`
+	FavoriteCount     int    `json:"favorite_count"`
+	RetweetCount      int    `json:"retweet_count"`
+	ReplyCount        int    `json:"reply_count"`
+	ViewCount         int    `json:"view_count"`
+	Source            string `json:"source"`
+	InReplyToStatusID int64
+	Entities          Entities `json:"entities"`
+	UserID            int64
+	CreatedAt         time.Time
+}
+
+// legacyTweet deserializes a tweet in response JSON.
+type legacyTweet struct {
+	Tweet
 	IDStr                string `json:"id_str"`
-	ID                   int64
-	FullText             string `json:"full_text"`
 	InReplyToStatusIDStr string `json:"in_reply_to_status_id_str"`
-	InReplyToStatusID    int64
-	Entities             Entities `json:"entities"`
-	UserIDStr            string   `json:"user_id_str"`
-	UserID               int64
+	UserIDStr            string `json:"user_id_str"`
 	CreatedAtRuby        string `json:"created_at"`
-	CreatedAt            time.Time
 }
 
-func updateTweets(tweets []Tweet) {
-	for i, tweet := range tweets {
-		tweets[i].ID = V(strconv.ParseInt(tweet.IDStr, 10, 64))
-		tweets[i].UserID = V(strconv.ParseInt(tweet.UserIDStr, 10, 64))
-		tweets[i].CreatedAt = V(time.Parse(time.RubyDate, tweet.CreatedAtRuby))
-		if tweet.InReplyToStatusIDStr != "" {
-			tweets[i].InReplyToStatusID = V(strconv.ParseInt(tweet.InReplyToStatusIDStr, 10, 64))
+func extractTweetsFromTweetDetail(jsonStr string) (legacyTweets []*legacyTweet, err error) {
+	contentsJson := gjson.Get(jsonStr, "data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content|@flatten")
+	contentsJson.ForEach(func(_, contentJson gjson.Result) (proceeds bool) {
+		if contentJson.Get("itemContent").Exists() {
+			legacyTweetJson := contentJson.Get("itemContent.tweet_results.result.legacy")
+			var legacyTweetNew legacyTweet
+			V0(json.Unmarshal([]byte(legacyTweetJson.String()), &legacyTweetNew))
+			legacyTweets = append(legacyTweets, &legacyTweetNew)
 		}
-	}
-}
-
-func ExtractTweetsFromTweetDetail(jsonStr string) (tweets []Tweet, err error) {
-	result := gjson.Get(jsonStr, `data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
-	V0(json.Unmarshal([]byte(result), &tweets))
-	result = gjson.Get(jsonStr, `data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
-	if result != "" {
-		var conversationTweets []Tweet
-		V0(json.Unmarshal([]byte(result), &conversationTweets))
-		tweets = append(tweets, conversationTweets...)
-	}
-	updateTweets(tweets)
+		if contentJson.Get("items").Exists() {
+			legacyTweetsJson := contentJson.Get("items.#.item.itemContent.tweet_results.result.legacy")
+			var legacyTweetsNew []*legacyTweet
+			V0(json.Unmarshal([]byte(legacyTweetsJson.String()), &legacyTweetsNew))
+			legacyTweets = append(legacyTweets, legacyTweetsNew...)
+		}
+		return true
+	})
 	return
 }
 
-func ExtractTweetsFromUserTweets(jsonStr string) (tweets []Tweet, err error) {
+func extractTweetsFromUserTweets(jsonStr string) (legacyTweets []*legacyTweet, conversationIds []int64, err error) {
 	defer Catch(&err)
-	result := gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
-	V0(json.Unmarshal([]byte(result), &tweets))
-	result = gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
-	if result != "" {
-		var conversationTweets []Tweet
-		V0(json.Unmarshal([]byte(result), &conversationTweets))
-		tweets = append(tweets, conversationTweets...)
+	contentsJson := gjson.Get(jsonStr, "data.user.result.timeline_v2.timeline.instructions.#.entries.#.content|@flatten")
+	contentsJson.ForEach(func(_, contentJson gjson.Result) (proceeds bool) {
+		if contentJson.Get("itemContent").Exists() {
+			legacyTweetJson := contentJson.Get("itemContent.tweet_results.result.legacy")
+			var legacyTweetNew legacyTweet
+			V0(json.Unmarshal([]byte(legacyTweetJson.String()), &legacyTweetNew))
+			legacyTweets = append(legacyTweets, &legacyTweetNew)
+		}
+		if contentJson.Get("items").Exists() {
+			legacyTweetsJson := contentJson.Get("items.#.item.itemContent.tweet_results.result.legacy")
+			allTweetIdsJson := contentJson.Get("metadata.conversationMetadata.allTweetIds")
+			var legacyTweetsNew []*legacyTweet
+			V0(json.Unmarshal([]byte(legacyTweetsJson.String()), &legacyTweetsNew))
+			legacyTweets = append(legacyTweets, legacyTweetsNew...)
+			if len(allTweetIdsJson.Array()) > len(legacyTweetsJson.Array()) {
+				conversationIds = append(conversationIds, allTweetIdsJson.Array()[0].Int())
+			}
+		}
+		return true
+	})
+	return
+}
+
+func getTypeName(myvar interface{}) string {
+	if t := reflect.TypeOf(myvar); t.Kind() == reflect.Ptr {
+		return "*" + t.Elem().Name()
+	} else {
+		return t.Name()
 	}
-	updateTweets(tweets)
-	return tweets, nil
+}
+
+type StartFuncParams struct {
+	Verbose  bool
+	Port     int
+	Duration time.Duration
+}
+
+type StartOption func(*StartFuncParams)
+
+func WithVerbose(verbose bool) StartOption {
+	return func(opts *StartFuncParams) {
+		opts.Verbose = verbose
+	}
+}
+
+func WithTimeout(timeout time.Duration) StartOption {
+	return func(opts *StartFuncParams) {
+		opts.Duration = timeout
+	}
+}
+
+func WithPort(port int) StartOption {
+	return func(opts *StartFuncParams) {
+		opts.Port = port
+	}
+}
+
+func Open(ctx context.Context, targetUrl string, matchRegex string, cb func(url string, body string)) {
+	//cdpCtx := chromedp.FromContext(ctx)
+	//ctxExec := cdp.WithExecutor(ctx, cdpCtx.Target)
+	reMatch := regexp.MustCompile(matchRegex)
+	targetUrls := make(map[network.RequestID]string)
+	chromedp.ListenTarget(ctx, func(ev any) {
+		//typeName := getTypeName(ev)
+		//log.Println("Event type:", typeName)
+		switch event := ev.(type) {
+		case *network.EventRequestWillBeSent:
+			if reMatch.MatchString(event.Request.URL) {
+				log.Println("Matched", event.Request.URL[:100], "...")
+				targetUrls[event.RequestID] = event.Request.URL
+			}
+		case *network.EventLoadingFinished:
+			if url, ok := targetUrls[event.RequestID]; ok {
+				log.Println("Fetched", url[:100], "...")
+				go func() {
+					cdpCtx := chromedp.FromContext(ctx)
+					ctxExec := cdp.WithExecutor(ctx, cdpCtx.Target)
+					body := string(V(network.GetResponseBody(event.RequestID).Do(ctxExec)))
+					cb(url, body)
+				}()
+			}
+		}
+	})
+	V0(chromedp.Run(ctx, chromedp.Navigate(targetUrl)))
+}
+
+func Start(
+	targetUrl string,
+	startOpts ...StartOption,
+) (tweets []*Tweet, err error) {
+	defer Catch(&err)
+
+	var legacyTweets []*legacyTweet
+	mu := sync.Mutex{}
+
+	funcParams := StartFuncParams{
+		Verbose:  false,
+		Port:     9222,
+		Duration: 10 * time.Minute,
+	}
+	for _, startOpt := range startOpts {
+		startOpt(&funcParams)
+	}
+	var cdpCtxOpts []chromedp.ContextOption
+	if funcParams.Verbose {
+		cdpCtxOpts = append(cdpCtxOpts, chromedp.WithDebugf(log.Printf))
+	}
+	debugUrl := neturl.URL{
+		Scheme: "ws",
+		Host:   fmt.Sprintf("%s:%d", "127.0.0.1", funcParams.Port),
+	}
+	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), debugUrl.String())
+	defer cancel()
+	if funcParams.Duration > 0 {
+		ctx, cancel = context.WithTimeout(ctx, funcParams.Duration)
+		defer cancel()
+	}
+
+	waitGroup := sync.WaitGroup{}
+
+	ctx, cancel = chromedp.NewContext(ctx)
+	defer cancel()
+	// Not `ListenTarget` but `ListenBrowser` can detect a `page` target detached.
+	chromedp.ListenBrowser(ctx, func(ev any) {
+		switch ev.(type) {
+		case *target.EventDetachedFromTarget:
+			waitGroup.Done()
+		}
+	})
+
+	// `Run` to acquire the browser.
+	V0(chromedp.Run(ctx))
+	// `Run` has opened a new `page` target.
+	waitGroup.Add(1)
+	Open(ctx, targetUrl, `/UserTweets\?`, func(url string, data string) {
+		legacyTweetsNew, convIds := V2(extractTweetsFromUserTweets(data))
+		mu.Lock()
+		defer mu.Unlock()
+		legacyTweets = append(legacyTweets, legacyTweetsNew...)
+		if funcParams.Verbose {
+			go func() {
+				for _, t := range legacyTweetsNew {
+					log.Println(t.CreatedAtRuby, t.FullText)
+				}
+			}()
+		}
+		// If some conversations have missing legacyTweets.
+		for _, convId := range convIds {
+			// Should handle cancel?
+			ctxChild, cancel := chromedp.NewContext(ctx)
+			Open(ctxChild, fmt.Sprintf("https://x.com/i/status/%d", convId), `/TweetDetail\?`, func(url string, data string) {
+				legacyTweetsNew := V(extractTweetsFromTweetDetail(data))
+				mu.Lock()
+				defer mu.Unlock()
+				legacyTweets = append(legacyTweets, legacyTweetsNew...)
+				if funcParams.Verbose {
+					go func() {
+						for _, t := range legacyTweetsNew {
+							log.Println(t.CreatedAtRuby, t.FullText)
+						}
+					}()
+				}
+				cancel()
+			})
+			waitGroup.Add(1)
+		}
+	})
+	waitGroup.Wait()
+
+	// Update missing fields.
+	for _, t := range legacyTweets {
+		t.ID = V(strconv.ParseInt(t.IDStr, 10, 64))
+		t.UserID = V(strconv.ParseInt(t.UserIDStr, 10, 64))
+		t.CreatedAt = V(time.Parse(time.RubyDate, t.CreatedAtRuby))
+		if t.InReplyToStatusIDStr != "" {
+			t.InReplyToStatusID = V(strconv.ParseInt(t.InReplyToStatusIDStr, 10, 64))
+		}
+	}
+	// Sort.
+	sort.Slice(legacyTweets, func(i, j int) bool {
+		return legacyTweets[i].CreatedAt.After(legacyTweets[j].CreatedAt)
+	})
+	// Uniq.
+	legacyTweets = slices.CompactFunc(legacyTweets, func(i, j *legacyTweet) bool {
+		return i.ID == j.ID
+	})
+	// Extract Tweet-s.
+	for _, t := range legacyTweets {
+		tweets = append(tweets, &t.Tweet)
+	}
+	return
 }

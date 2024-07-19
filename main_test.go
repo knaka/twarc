@@ -16,24 +16,27 @@ func Test_extractTweets(t *testing.T) {
 		json string
 	}
 	tests := []struct {
-		name       string
-		args       args
-		wantTweets int
+		name        string
+		args        args
+		wantTweets  int
+		wantConvIds int
 	}{
 		{
 			"Test 1",
 			args{json},
 			21,
+			1,
 		},
 		{
 			"Test 3",
 			args{json3},
 			19,
+			1,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotTweets, err := ExtractTweetsFromUserTweets(tt.args.json); err != nil || len(gotTweets) != tt.wantTweets {
+			if gotTweets, convIds, err := extractTweetsFromUserTweets(tt.args.json); err != nil || len(gotTweets) != tt.wantTweets || len(convIds) != tt.wantConvIds {
 				t.Errorf("ExtractTweets() = %v, want %v", len(gotTweets), tt.wantTweets)
 			}
 		})
@@ -60,14 +63,14 @@ func TestExtractTweetsFromTweetDetail(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotTweets, err := ExtractTweetsFromTweetDetail(tt.args.jsonStr)
+			gotTweets, err := extractTweetsFromTweetDetail(tt.args.jsonStr)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ExtractTweetsFromTweetDetail() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("extractTweetsFromTweetDetail() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if len(gotTweets) != tt.wantTweets {
 
-				t.Errorf("ExtractTweetsFromTweetDetail() = %v, want %v", len(gotTweets), tt.wantTweets)
+				t.Errorf("extractTweetsFromTweetDetail() = %v, want %v", len(gotTweets), tt.wantTweets)
 			}
 		})
 	}
