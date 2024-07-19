@@ -254,7 +254,7 @@ func Start(
 		url := neturl.URL{
 			Scheme: "https",
 			Host:   "x.com",
-			Path:   fmt.Sprintf("/%s", funcParams.Page),
+			Path:   funcParams.Page,
 		}
 		targetUrl := url.String()
 		Open(ctx, targetUrl, `/UserTweets\?`, func(url string, data string) {
