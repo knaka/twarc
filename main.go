@@ -37,14 +37,7 @@ type Tweet struct {
 	CreatedAt            time.Time
 }
 
-func ExtractTweets(jsonStr string) (tweets []Tweet, err error) {
-	defer Catch(&err)
-	result := gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
-	V0(json.Unmarshal([]byte(result), &tweets))
-	result = gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
-	var conversationTweets []Tweet
-	V0(json.Unmarshal([]byte(result), &conversationTweets))
-	tweets = append(tweets, conversationTweets...)
+func updateTweets(tweets []Tweet) {
 	for i, tweet := range tweets {
 		tweets[i].ID = V(strconv.ParseInt(tweet.IDStr, 10, 64))
 		tweets[i].UserID = V(strconv.ParseInt(tweet.UserIDStr, 10, 64))
@@ -53,5 +46,31 @@ func ExtractTweets(jsonStr string) (tweets []Tweet, err error) {
 			tweets[i].InReplyToStatusID = V(strconv.ParseInt(tweet.InReplyToStatusIDStr, 10, 64))
 		}
 	}
+}
+
+func ExtractTweetsFromTweetDetail(jsonStr string) (tweets []Tweet, err error) {
+	result := gjson.Get(jsonStr, `data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
+	V0(json.Unmarshal([]byte(result), &tweets))
+	result = gjson.Get(jsonStr, `data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
+	if result != "" {
+		var conversationTweets []Tweet
+		V0(json.Unmarshal([]byte(result), &conversationTweets))
+		tweets = append(tweets, conversationTweets...)
+	}
+	updateTweets(tweets)
 	return
+}
+
+func ExtractTweetsFromUserTweets(jsonStr string) (tweets []Tweet, err error) {
+	defer Catch(&err)
+	result := gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten`).String()
+	V0(json.Unmarshal([]byte(result), &tweets))
+	result = gjson.Get(jsonStr, `data.user.result.timeline_v2.timeline.instructions.#.entries.#.content.items.#.item.itemContent.tweet_results.result.legacy|@flatten|@flatten`).String()
+	if result != "" {
+		var conversationTweets []Tweet
+		V0(json.Unmarshal([]byte(result), &conversationTweets))
+		tweets = append(tweets, conversationTweets...)
+	}
+	updateTweets(tweets)
+	return tweets, nil
 }

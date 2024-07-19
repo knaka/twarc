@@ -1,0 +1,1120 @@
+{
+    "data": {
+        "threaded_conversation_with_injections_v2": {
+            "instructions": [
+                {
+                    "type": "TimelineAddEntries",
+                    "entries": [
+                        {
+                            "entryId": "tweet-1813451648091713653",
+                            "sortIndex": "7409920388763062154",
+                            "content": {
+                                "entryType": "TimelineTimelineItem",
+                                "__typename": "TimelineTimelineItem",
+                                "itemContent": {
+                                    "itemType": "TimelineTweet",
+                                    "__typename": "TimelineTweet",
+                                    "tweet_results": {
+                                        "result": {
+                                            "__typename": "Tweet",
+                                            "rest_id": "1813451648091713653",
+                                            "has_birdwatch_notes": false,
+                                            "core": {
+                                                "user_results": {
+                                                    "result": {
+                                                        "__typename": "User",
+                                                        "id": "VXNlcjo2NDY3Mjcy",
+                                                        "rest_id": "6467272",
+                                                        "affiliates_highlighted_label": {},
+                                                        "has_graduated_access": true,
+                                                        "is_blue_verified": false,
+                                                        "profile_image_shape": "Circle",
+                                                        "legacy": {
+                                                            "can_dm": true,
+                                                            "can_media_tag": true,
+                                                            "created_at": "Thu May 31 09:58:29 +0000 2007",
+                                                            "default_profile": false,
+                                                            "default_profile_image": false,
+                                                            "description": "伊豆半島で猫の手を借りながらソフトウェアエンジニア。最近薪材が足りてきて嬉しいﾎｸﾎｸ",
+                                                            "entities": {
+                                                                "description": {
+                                                                    "urls": []
+                                                                },
+                                                                "url": {
+                                                                    "urls": [
+                                                                        {
+                                                                            "display_url": "ayutaya.com",
+                                                                            "expanded_url": "http://www.ayutaya.com/",
+                                                                            "url": "https://t.co/7JPBoQUtw8",
+                                                                            "indices": [
+                                                                                0,
+                                                                                23
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            },
+                                                            "fast_followers_count": 0,
+                                                            "favourites_count": 3585,
+                                                            "followers_count": 393,
+                                                            "friends_count": 436,
+                                                            "has_custom_timelines": true,
+                                                            "is_translator": false,
+                                                            "listed_count": 35,
+                                                            "location": "田方郡, 静岡県",
+                                                            "media_count": 792,
+                                                            "name": "那賀 樹一郎 Kiichiro-Kyle NAKA",
+                                                            "needs_phone_verification": false,
+                                                            "normal_followers_count": 393,
+                                                            "pinned_tweet_ids_str": [],
+                                                            "possibly_sensitive": false,
+                                                            "profile_banner_url": "https://pbs.twimg.com/profile_banners/6467272/1650963409",
+                                                            "profile_image_url_https": "https://pbs.twimg.com/profile_images/1516599330534457346/NWlKrcsU_normal.jpg",
+                                                            "profile_interstitial_type": "",
+                                                            "screen_name": "knaka",
+                                                            "statuses_count": 20980,
+                                                            "translator_type": "none",
+                                                            "url": "https://t.co/7JPBoQUtw8",
+                                                            "verified": false,
+                                                            "want_retweets": false,
+                                                            "withheld_in_countries": []
+                                                        },
+                                                        "tipjar_settings": {}
+                                                    }
+                                                }
+                                            },
+                                            "unmention_data": {},
+                                            "edit_control": {
+                                                "edit_tweet_ids": [
+                                                    "1813451648091713653"
+                                                ],
+                                                "editable_until_msecs": "1721199139000",
+                                                "is_edit_eligible": false,
+                                                "edits_remaining": "5"
+                                            },
+                                            "is_translatable": true,
+                                            "views": {
+                                                "count": "95",
+                                                "state": "EnabledWithCount"
+                                            },
+                                            "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+                                            "legacy": {
+                                                "bookmark_count": 0,
+                                                "bookmarked": false,
+                                                "created_at": "Wed Jul 17 05:52:19 +0000 2024",
+                                                "conversation_id_str": "1813451648091713653",
+                                                "display_text_range": [
+                                                    0,
+                                                    145
+                                                ],
+                                                "entities": {
+                                                    "hashtags": [],
+                                                    "symbols": [],
+                                                    "timestamps": [],
+                                                    "urls": [],
+                                                    "user_mentions": []
+                                                },
+                                                "favorite_count": 0,
+                                                "favorited": false,
+                                                "full_text": "TwitterのタイムラインのwebインターフェイスはGraphQLのAPIにクエリしてデータを得ているので、ブラウザが取得するそのレスポンスを横流しすれば、特に認証とか考えなくてもタイムラインのデータを取れるか。ヘッドレスだと認証情報を別途渡してやらないとなので、ヘッドありでやってみよう",
+                                                "is_quote_status": false,
+                                                "lang": "ja",
+                                                "quote_count": 0,
+                                                "reply_count": 1,
+                                                "retweet_count": 0,
+                                                "retweeted": false,
+                                                "user_id_str": "6467272",
+                                                "id_str": "1813451648091713653"
+                                            },
+                                            "quick_promote_eligibility": {
+                                                "eligibility": "IneligibleNotProfessional"
+                                            }
+                                        }
+                                    },
+                                    "tweetDisplayType": "SelfThread",
+                                    "hasModeratedReplies": false
+                                }
+                            }
+                        },
+                        {
+                            "entryId": "conversationthread-1813492767907295518",
+                            "sortIndex": "7409920388763062144",
+                            "content": {
+                                "entryType": "TimelineTimelineModule",
+                                "__typename": "TimelineTimelineModule",
+                                "items": [
+                                    {
+                                        "entryId": "conversationthread-1813492767907295518-tweet-1813492767907295518",
+                                        "item": {
+                                            "itemContent": {
+                                                "itemType": "TimelineTweet",
+                                                "__typename": "TimelineTweet",
+                                                "tweet_results": {
+                                                    "result": {
+                                                        "__typename": "Tweet",
+                                                        "rest_id": "1813492767907295518",
+                                                        "has_birdwatch_notes": false,
+                                                        "core": {
+                                                            "user_results": {
+                                                                "result": {
+                                                                    "__typename": "User",
+                                                                    "id": "VXNlcjo2NDY3Mjcy",
+                                                                    "rest_id": "6467272",
+                                                                    "affiliates_highlighted_label": {},
+                                                                    "has_graduated_access": true,
+                                                                    "is_blue_verified": false,
+                                                                    "profile_image_shape": "Circle",
+                                                                    "legacy": {
+                                                                        "can_dm": true,
+                                                                        "can_media_tag": true,
+                                                                        "created_at": "Thu May 31 09:58:29 +0000 2007",
+                                                                        "default_profile": false,
+                                                                        "default_profile_image": false,
+                                                                        "description": "伊豆半島で猫の手を借りながらソフトウェアエンジニア。最近薪材が足りてきて嬉しいﾎｸﾎｸ",
+                                                                        "entities": {
+                                                                            "description": {
+                                                                                "urls": []
+                                                                            },
+                                                                            "url": {
+                                                                                "urls": [
+                                                                                    {
+                                                                                        "display_url": "ayutaya.com",
+                                                                                        "expanded_url": "http://www.ayutaya.com/",
+                                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                                        "indices": [
+                                                                                            0,
+                                                                                            23
+                                                                                        ]
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "fast_followers_count": 0,
+                                                                        "favourites_count": 3585,
+                                                                        "followers_count": 393,
+                                                                        "friends_count": 436,
+                                                                        "has_custom_timelines": true,
+                                                                        "is_translator": false,
+                                                                        "listed_count": 35,
+                                                                        "location": "田方郡, 静岡県",
+                                                                        "media_count": 792,
+                                                                        "name": "那賀 樹一郎 Kiichiro-Kyle NAKA",
+                                                                        "needs_phone_verification": false,
+                                                                        "normal_followers_count": 393,
+                                                                        "pinned_tweet_ids_str": [],
+                                                                        "possibly_sensitive": false,
+                                                                        "profile_banner_url": "https://pbs.twimg.com/profile_banners/6467272/1650963409",
+                                                                        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1516599330534457346/NWlKrcsU_normal.jpg",
+                                                                        "profile_interstitial_type": "",
+                                                                        "screen_name": "knaka",
+                                                                        "statuses_count": 20980,
+                                                                        "translator_type": "none",
+                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                        "verified": false,
+                                                                        "want_retweets": false,
+                                                                        "withheld_in_countries": []
+                                                                    },
+                                                                    "tipjar_settings": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "unmention_data": {},
+                                                        "edit_control": {
+                                                            "edit_tweet_ids": [
+                                                                "1813492767907295518"
+                                                            ],
+                                                            "editable_until_msecs": "1721208943000",
+                                                            "is_edit_eligible": false,
+                                                            "edits_remaining": "5"
+                                                        },
+                                                        "is_translatable": true,
+                                                        "views": {
+                                                            "count": "37",
+                                                            "state": "EnabledWithCount"
+                                                        },
+                                                        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+                                                        "legacy": {
+                                                            "bookmark_count": 0,
+                                                            "bookmarked": false,
+                                                            "created_at": "Wed Jul 17 08:35:43 +0000 2024",
+                                                            "conversation_id_str": "1813451648091713653",
+                                                            "display_text_range": [
+                                                                0,
+                                                                136
+                                                            ],
+                                                            "entities": {
+                                                                "hashtags": [],
+                                                                "symbols": [],
+                                                                "timestamps": [],
+                                                                "urls": [],
+                                                                "user_mentions": []
+                                                            },
+                                                            "favorite_count": 0,
+                                                            "favorited": false,
+                                                            "full_text": "とりあえずできたか。リモートデバッグ開けて起動したChromeに繋いで、Network.requestWillBeSentイベントでURL確認して、Network.loadingFinishedイベント来たらNetwork.getResponseBody()でデータ取れた",
+                                                            "in_reply_to_screen_name": "knaka",
+                                                            "in_reply_to_status_id_str": "1813451648091713653",
+                                                            "in_reply_to_user_id_str": "6467272",
+                                                            "is_quote_status": false,
+                                                            "lang": "ja",
+                                                            "quote_count": 0,
+                                                            "reply_count": 1,
+                                                            "retweet_count": 0,
+                                                            "retweeted": false,
+                                                            "user_id_str": "6467272",
+                                                            "id_str": "1813492767907295518"
+                                                        },
+                                                        "quick_promote_eligibility": {
+                                                            "eligibility": "IneligibleNotProfessional"
+                                                        }
+                                                    }
+                                                },
+                                                "tweetDisplayType": "SelfThread"
+                                            },
+                                            "clientEventInfo": {
+                                                "details": {
+                                                    "conversationDetails": {
+                                                        "conversationSection": "HighQuality"
+                                                    },
+                                                    "timelinesDetails": {
+                                                        "controllerData": "DAACDAAEDAABCgABDQAKCCADg9UKAAIAAAAABIBACAAAAAA="
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "entryId": "conversationthread-1813492767907295518-tweet-1813738758052933660",
+                                        "item": {
+                                            "itemContent": {
+                                                "itemType": "TimelineTweet",
+                                                "__typename": "TimelineTweet",
+                                                "tweet_results": {
+                                                    "result": {
+                                                        "__typename": "Tweet",
+                                                        "rest_id": "1813738758052933660",
+                                                        "has_birdwatch_notes": false,
+                                                        "core": {
+                                                            "user_results": {
+                                                                "result": {
+                                                                    "__typename": "User",
+                                                                    "id": "VXNlcjo2NDY3Mjcy",
+                                                                    "rest_id": "6467272",
+                                                                    "affiliates_highlighted_label": {},
+                                                                    "has_graduated_access": true,
+                                                                    "is_blue_verified": false,
+                                                                    "profile_image_shape": "Circle",
+                                                                    "legacy": {
+                                                                        "can_dm": true,
+                                                                        "can_media_tag": true,
+                                                                        "created_at": "Thu May 31 09:58:29 +0000 2007",
+                                                                        "default_profile": false,
+                                                                        "default_profile_image": false,
+                                                                        "description": "伊豆半島で猫の手を借りながらソフトウェアエンジニア。最近薪材が足りてきて嬉しいﾎｸﾎｸ",
+                                                                        "entities": {
+                                                                            "description": {
+                                                                                "urls": []
+                                                                            },
+                                                                            "url": {
+                                                                                "urls": [
+                                                                                    {
+                                                                                        "display_url": "ayutaya.com",
+                                                                                        "expanded_url": "http://www.ayutaya.com/",
+                                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                                        "indices": [
+                                                                                            0,
+                                                                                            23
+                                                                                        ]
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "fast_followers_count": 0,
+                                                                        "favourites_count": 3585,
+                                                                        "followers_count": 393,
+                                                                        "friends_count": 436,
+                                                                        "has_custom_timelines": true,
+                                                                        "is_translator": false,
+                                                                        "listed_count": 35,
+                                                                        "location": "田方郡, 静岡県",
+                                                                        "media_count": 792,
+                                                                        "name": "那賀 樹一郎 Kiichiro-Kyle NAKA",
+                                                                        "needs_phone_verification": false,
+                                                                        "normal_followers_count": 393,
+                                                                        "pinned_tweet_ids_str": [],
+                                                                        "possibly_sensitive": false,
+                                                                        "profile_banner_url": "https://pbs.twimg.com/profile_banners/6467272/1650963409",
+                                                                        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1516599330534457346/NWlKrcsU_normal.jpg",
+                                                                        "profile_interstitial_type": "",
+                                                                        "screen_name": "knaka",
+                                                                        "statuses_count": 20980,
+                                                                        "translator_type": "none",
+                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                        "verified": false,
+                                                                        "want_retweets": false,
+                                                                        "withheld_in_countries": []
+                                                                    },
+                                                                    "tipjar_settings": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "card": {
+                                                            "rest_id": "https://t.co/KMy41nT1Rw",
+                                                            "legacy": {
+                                                                "binding_values": [
+                                                                    {
+                                                                        "key": "thumbnail_image",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 144,
+                                                                                "width": 144,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=144x144_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "description",
+                                                                        "value": {
+                                                                            "string_value": "Chrome DevTools Protocol - version tot - Target domain",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "domain",
+                                                                        "value": {
+                                                                            "string_value": "chromedevtools.github.io",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_large",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 420,
+                                                                                "width": 420,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=420x420_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_original",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 450,
+                                                                                "width": 800,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=orig"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "site",
+                                                                        "value": {
+                                                                            "scribe_key": "publisher_id",
+                                                                            "type": "USER",
+                                                                            "user_value": {
+                                                                                "id_str": "2862241270",
+                                                                                "path": []
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_small",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 100,
+                                                                                "width": 100,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=100x100_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_x_large",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 450,
+                                                                                "width": 800,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=2048x2048_2_exp"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "vanity_url",
+                                                                        "value": {
+                                                                            "scribe_key": "vanity_url",
+                                                                            "string_value": "chromedevtools.github.io",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_color",
+                                                                        "value": {
+                                                                            "image_color_value": {
+                                                                                "palette": [
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 133,
+                                                                                            "red": 59
+                                                                                        },
+                                                                                        "percentage": 43.31
+                                                                                    },
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 182,
+                                                                                            "red": 139
+                                                                                        },
+                                                                                        "percentage": 4.93
+                                                                                    },
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 217,
+                                                                                            "red": 194
+                                                                                        },
+                                                                                        "percentage": 0.85
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "type": "IMAGE_COLOR"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "title",
+                                                                        "value": {
+                                                                            "string_value": "Chrome DevTools Protocol",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "card_url",
+                                                                        "value": {
+                                                                            "scribe_key": "card_url",
+                                                                            "string_value": "https://t.co/KMy41nT1Rw",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "card_platform": {
+                                                                    "platform": {
+                                                                        "audience": {
+                                                                            "name": "production"
+                                                                        },
+                                                                        "device": {
+                                                                            "name": "Swift",
+                                                                            "version": "12"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "name": "summary",
+                                                                "url": "https://t.co/KMy41nT1Rw",
+                                                                "user_refs_results": [
+                                                                    {
+                                                                        "result": {
+                                                                            "__typename": "User",
+                                                                            "id": "VXNlcjoyODYyMjQxMjcw",
+                                                                            "rest_id": "2862241270",
+                                                                            "affiliates_highlighted_label": {},
+                                                                            "has_graduated_access": true,
+                                                                            "is_blue_verified": false,
+                                                                            "profile_image_shape": "Circle",
+                                                                            "legacy": {
+                                                                                "can_dm": false,
+                                                                                "can_media_tag": true,
+                                                                                "created_at": "Wed Nov 05 10:18:39 +0000 2014",
+                                                                                "default_profile": false,
+                                                                                "default_profile_image": false,
+                                                                                "description": "Official account. Follow for latest news, features, tips and more.\nShape the future of DevTools, participate: https://t.co/qyqSn15AM4",
+                                                                                "entities": {
+                                                                                    "description": {
+                                                                                        "urls": [
+                                                                                            {
+                                                                                                "display_url": "goo.gle/devtools-ux-re…",
+                                                                                                "expanded_url": "http://goo.gle/devtools-ux-research",
+                                                                                                "url": "https://t.co/qyqSn15AM4",
+                                                                                                "indices": [
+                                                                                                    110,
+                                                                                                    133
+                                                                                                ]
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "url": {
+                                                                                        "urls": [
+                                                                                            {
+                                                                                                "display_url": "devtools.chrome.com",
+                                                                                                "expanded_url": "https://devtools.chrome.com",
+                                                                                                "url": "https://t.co/FQTFS20tqO",
+                                                                                                "indices": [
+                                                                                                    0,
+                                                                                                    23
+                                                                                                ]
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "fast_followers_count": 0,
+                                                                                "favourites_count": 4459,
+                                                                                "followers_count": 120610,
+                                                                                "friends_count": 95,
+                                                                                "has_custom_timelines": true,
+                                                                                "is_translator": false,
+                                                                                "listed_count": 2443,
+                                                                                "location": "Google Chrome",
+                                                                                "media_count": 656,
+                                                                                "name": "Chrome DevTools",
+                                                                                "normal_followers_count": 120610,
+                                                                                "pinned_tweet_ids_str": [
+                                                                                    "1805912171777290498"
+                                                                                ],
+                                                                                "possibly_sensitive": false,
+                                                                                "profile_image_url_https": "https://pbs.twimg.com/profile_images/762579160099385344/w5MfsnMn_normal.jpg",
+                                                                                "profile_interstitial_type": "",
+                                                                                "screen_name": "ChromeDevTools",
+                                                                                "statuses_count": 3257,
+                                                                                "translator_type": "none",
+                                                                                "url": "https://t.co/FQTFS20tqO",
+                                                                                "verified": false,
+                                                                                "want_retweets": false,
+                                                                                "withheld_in_countries": []
+                                                                            },
+                                                                            "tipjar_settings": {}
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "unmention_data": {},
+                                                        "edit_control": {
+                                                            "edit_tweet_ids": [
+                                                                "1813738758052933660"
+                                                            ],
+                                                            "editable_until_msecs": "1721267592000",
+                                                            "is_edit_eligible": false,
+                                                            "edits_remaining": "5"
+                                                        },
+                                                        "is_translatable": true,
+                                                        "views": {
+                                                            "count": "26",
+                                                            "state": "EnabledWithCount"
+                                                        },
+                                                        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+                                                        "legacy": {
+                                                            "bookmark_count": 0,
+                                                            "bookmarked": false,
+                                                            "created_at": "Thu Jul 18 00:53:12 +0000 2024",
+                                                            "conversation_id_str": "1813451648091713653",
+                                                            "display_text_range": [
+                                                                0,
+                                                                110
+                                                            ],
+                                                            "entities": {
+                                                                "hashtags": [],
+                                                                "symbols": [],
+                                                                "timestamps": [],
+                                                                "urls": [
+                                                                    {
+                                                                        "display_url": "chromedevtools.github.io/devtools-proto…",
+                                                                        "expanded_url": "https://chromedevtools.github.io/devtools-protocol/tot/Target/#event-detachedFromTarget",
+                                                                        "url": "https://t.co/KMy41nT1Rw",
+                                                                        "indices": [
+                                                                            87,
+                                                                            110
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "user_mentions": []
+                                                            },
+                                                            "favorite_count": 0,
+                                                            "favorited": false,
+                                                            "full_text": "headnessに既存ブラウザにタブ開いて繋いで、そのタブが閉じられたら終わりにしたい。それイベント何？ これかな `Target.detachedFromTarget`  https://t.co/KMy41nT1Rw",
+                                                            "in_reply_to_screen_name": "knaka",
+                                                            "in_reply_to_status_id_str": "1813492767907295518",
+                                                            "in_reply_to_user_id_str": "6467272",
+                                                            "is_quote_status": false,
+                                                            "lang": "ja",
+                                                            "possibly_sensitive": false,
+                                                            "possibly_sensitive_editable": true,
+                                                            "quote_count": 0,
+                                                            "reply_count": 1,
+                                                            "retweet_count": 0,
+                                                            "retweeted": false,
+                                                            "user_id_str": "6467272",
+                                                            "id_str": "1813738758052933660"
+                                                        },
+                                                        "quick_promote_eligibility": {
+                                                            "eligibility": "IneligibleNotProfessional"
+                                                        }
+                                                    }
+                                                },
+                                                "tweetDisplayType": "SelfThread"
+                                            },
+                                            "clientEventInfo": {
+                                                "details": {
+                                                    "conversationDetails": {
+                                                        "conversationSection": "HighQuality"
+                                                    },
+                                                    "timelinesDetails": {
+                                                        "controllerData": "DAACDAAEDAABCgABDQAKECBDg9EKAAIAAAAABIBACAAAAAA="
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "entryId": "conversationthread-1813492767907295518-tweet-1813739500050472990",
+                                        "item": {
+                                            "itemContent": {
+                                                "itemType": "TimelineTweet",
+                                                "__typename": "TimelineTweet",
+                                                "tweet_results": {
+                                                    "result": {
+                                                        "__typename": "Tweet",
+                                                        "rest_id": "1813739500050472990",
+                                                        "has_birdwatch_notes": false,
+                                                        "core": {
+                                                            "user_results": {
+                                                                "result": {
+                                                                    "__typename": "User",
+                                                                    "id": "VXNlcjo2NDY3Mjcy",
+                                                                    "rest_id": "6467272",
+                                                                    "affiliates_highlighted_label": {},
+                                                                    "has_graduated_access": true,
+                                                                    "is_blue_verified": false,
+                                                                    "profile_image_shape": "Circle",
+                                                                    "legacy": {
+                                                                        "can_dm": true,
+                                                                        "can_media_tag": true,
+                                                                        "created_at": "Thu May 31 09:58:29 +0000 2007",
+                                                                        "default_profile": false,
+                                                                        "default_profile_image": false,
+                                                                        "description": "伊豆半島で猫の手を借りながらソフトウェアエンジニア。最近薪材が足りてきて嬉しいﾎｸﾎｸ",
+                                                                        "entities": {
+                                                                            "description": {
+                                                                                "urls": []
+                                                                            },
+                                                                            "url": {
+                                                                                "urls": [
+                                                                                    {
+                                                                                        "display_url": "ayutaya.com",
+                                                                                        "expanded_url": "http://www.ayutaya.com/",
+                                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                                        "indices": [
+                                                                                            0,
+                                                                                            23
+                                                                                        ]
+                                                                                    }
+                                                                                ]
+                                                                            }
+                                                                        },
+                                                                        "fast_followers_count": 0,
+                                                                        "favourites_count": 3585,
+                                                                        "followers_count": 393,
+                                                                        "friends_count": 436,
+                                                                        "has_custom_timelines": true,
+                                                                        "is_translator": false,
+                                                                        "listed_count": 35,
+                                                                        "location": "田方郡, 静岡県",
+                                                                        "media_count": 792,
+                                                                        "name": "那賀 樹一郎 Kiichiro-Kyle NAKA",
+                                                                        "needs_phone_verification": false,
+                                                                        "normal_followers_count": 393,
+                                                                        "pinned_tweet_ids_str": [],
+                                                                        "possibly_sensitive": false,
+                                                                        "profile_banner_url": "https://pbs.twimg.com/profile_banners/6467272/1650963409",
+                                                                        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1516599330534457346/NWlKrcsU_normal.jpg",
+                                                                        "profile_interstitial_type": "",
+                                                                        "screen_name": "knaka",
+                                                                        "statuses_count": 20980,
+                                                                        "translator_type": "none",
+                                                                        "url": "https://t.co/7JPBoQUtw8",
+                                                                        "verified": false,
+                                                                        "want_retweets": false,
+                                                                        "withheld_in_countries": []
+                                                                    },
+                                                                    "tipjar_settings": {}
+                                                                }
+                                                            }
+                                                        },
+                                                        "card": {
+                                                            "rest_id": "https://t.co/7BPO7vAad0",
+                                                            "legacy": {
+                                                                "binding_values": [
+                                                                    {
+                                                                        "key": "thumbnail_image",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 144,
+                                                                                "width": 144,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=144x144_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "description",
+                                                                        "value": {
+                                                                            "string_value": "Chrome DevTools Protocol - version tot - Target domain",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "domain",
+                                                                        "value": {
+                                                                            "string_value": "chromedevtools.github.io",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_large",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 420,
+                                                                                "width": 420,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=420x420_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_original",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 450,
+                                                                                "width": 800,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=orig"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "site",
+                                                                        "value": {
+                                                                            "scribe_key": "publisher_id",
+                                                                            "type": "USER",
+                                                                            "user_value": {
+                                                                                "id_str": "2862241270",
+                                                                                "path": []
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_small",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 100,
+                                                                                "width": 100,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=100x100_2"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_x_large",
+                                                                        "value": {
+                                                                            "image_value": {
+                                                                                "height": 450,
+                                                                                "width": 800,
+                                                                                "url": "https://pbs.twimg.com/card_img/1812806092738478080/zjgIlbU0?format=png&name=2048x2048_2_exp"
+                                                                            },
+                                                                            "type": "IMAGE"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "vanity_url",
+                                                                        "value": {
+                                                                            "scribe_key": "vanity_url",
+                                                                            "string_value": "chromedevtools.github.io",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "thumbnail_image_color",
+                                                                        "value": {
+                                                                            "image_color_value": {
+                                                                                "palette": [
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 133,
+                                                                                            "red": 59
+                                                                                        },
+                                                                                        "percentage": 43.31
+                                                                                    },
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 182,
+                                                                                            "red": 139
+                                                                                        },
+                                                                                        "percentage": 4.93
+                                                                                    },
+                                                                                    {
+                                                                                        "rgb": {
+                                                                                            "blue": 255,
+                                                                                            "green": 217,
+                                                                                            "red": 194
+                                                                                        },
+                                                                                        "percentage": 0.85
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "type": "IMAGE_COLOR"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "title",
+                                                                        "value": {
+                                                                            "string_value": "Chrome DevTools Protocol",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "key": "card_url",
+                                                                        "value": {
+                                                                            "scribe_key": "card_url",
+                                                                            "string_value": "https://t.co/7BPO7vAad0",
+                                                                            "type": "STRING"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "card_platform": {
+                                                                    "platform": {
+                                                                        "audience": {
+                                                                            "name": "production"
+                                                                        },
+                                                                        "device": {
+                                                                            "name": "Swift",
+                                                                            "version": "12"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "name": "summary",
+                                                                "url": "https://t.co/7BPO7vAad0",
+                                                                "user_refs_results": [
+                                                                    {
+                                                                        "result": {
+                                                                            "__typename": "User",
+                                                                            "id": "VXNlcjoyODYyMjQxMjcw",
+                                                                            "rest_id": "2862241270",
+                                                                            "affiliates_highlighted_label": {},
+                                                                            "has_graduated_access": true,
+                                                                            "is_blue_verified": false,
+                                                                            "profile_image_shape": "Circle",
+                                                                            "legacy": {
+                                                                                "can_dm": false,
+                                                                                "can_media_tag": true,
+                                                                                "created_at": "Wed Nov 05 10:18:39 +0000 2014",
+                                                                                "default_profile": false,
+                                                                                "default_profile_image": false,
+                                                                                "description": "Official account. Follow for latest news, features, tips and more.\nShape the future of DevTools, participate: https://t.co/qyqSn15AM4",
+                                                                                "entities": {
+                                                                                    "description": {
+                                                                                        "urls": [
+                                                                                            {
+                                                                                                "display_url": "goo.gle/devtools-ux-re…",
+                                                                                                "expanded_url": "http://goo.gle/devtools-ux-research",
+                                                                                                "url": "https://t.co/qyqSn15AM4",
+                                                                                                "indices": [
+                                                                                                    110,
+                                                                                                    133
+                                                                                                ]
+                                                                                            }
+                                                                                        ]
+                                                                                    },
+                                                                                    "url": {
+                                                                                        "urls": [
+                                                                                            {
+                                                                                                "display_url": "devtools.chrome.com",
+                                                                                                "expanded_url": "https://devtools.chrome.com",
+                                                                                                "url": "https://t.co/FQTFS20tqO",
+                                                                                                "indices": [
+                                                                                                    0,
+                                                                                                    23
+                                                                                                ]
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                },
+                                                                                "fast_followers_count": 0,
+                                                                                "favourites_count": 4459,
+                                                                                "followers_count": 120610,
+                                                                                "friends_count": 95,
+                                                                                "has_custom_timelines": true,
+                                                                                "is_translator": false,
+                                                                                "listed_count": 2443,
+                                                                                "location": "Google Chrome",
+                                                                                "media_count": 656,
+                                                                                "name": "Chrome DevTools",
+                                                                                "normal_followers_count": 120610,
+                                                                                "pinned_tweet_ids_str": [
+                                                                                    "1805912171777290498"
+                                                                                ],
+                                                                                "possibly_sensitive": false,
+                                                                                "profile_image_url_https": "https://pbs.twimg.com/profile_images/762579160099385344/w5MfsnMn_normal.jpg",
+                                                                                "profile_interstitial_type": "",
+                                                                                "screen_name": "ChromeDevTools",
+                                                                                "statuses_count": 3257,
+                                                                                "translator_type": "none",
+                                                                                "url": "https://t.co/FQTFS20tqO",
+                                                                                "verified": false,
+                                                                                "want_retweets": false,
+                                                                                "withheld_in_countries": []
+                                                                            },
+                                                                            "tipjar_settings": {}
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "unmention_data": {},
+                                                        "edit_control": {
+                                                            "edit_tweet_ids": [
+                                                                "1813739500050472990"
+                                                            ],
+                                                            "editable_until_msecs": "1721267769000",
+                                                            "is_edit_eligible": false,
+                                                            "edits_remaining": "5"
+                                                        },
+                                                        "is_translatable": true,
+                                                        "views": {
+                                                            "count": "15",
+                                                            "state": "EnabledWithCount"
+                                                        },
+                                                        "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+                                                        "legacy": {
+                                                            "bookmark_count": 0,
+                                                            "bookmarked": false,
+                                                            "created_at": "Thu Jul 18 00:56:09 +0000 2024",
+                                                            "conversation_id_str": "1813451648091713653",
+                                                            "display_text_range": [
+                                                                0,
+                                                                66
+                                                            ],
+                                                            "entities": {
+                                                                "hashtags": [],
+                                                                "symbols": [],
+                                                                "timestamps": [],
+                                                                "urls": [
+                                                                    {
+                                                                        "display_url": "chromedevtools.github.io/devtools-proto…",
+                                                                        "expanded_url": "https://chromedevtools.github.io/devtools-protocol/tot/Target/#event-targetDestroyed",
+                                                                        "url": "https://t.co/7BPO7vAad0",
+                                                                        "indices": [
+                                                                            43,
+                                                                            66
+                                                                        ]
+                                                                    }
+                                                                ],
+                                                                "user_mentions": []
+                                                            },
+                                                            "favorite_count": 0,
+                                                            "favorited": false,
+                                                            "full_text": "`Target.targetDestroyed` が来そうなものだが、来ないんだよな https://t.co/7BPO7vAad0",
+                                                            "in_reply_to_screen_name": "knaka",
+                                                            "in_reply_to_status_id_str": "1813738758052933660",
+                                                            "in_reply_to_user_id_str": "6467272",
+                                                            "is_quote_status": false,
+                                                            "lang": "ja",
+                                                            "possibly_sensitive": false,
+                                                            "possibly_sensitive_editable": true,
+                                                            "quote_count": 0,
+                                                            "reply_count": 0,
+                                                            "retweet_count": 0,
+                                                            "retweeted": false,
+                                                            "user_id_str": "6467272",
+                                                            "id_str": "1813739500050472990"
+                                                        },
+                                                        "quick_promote_eligibility": {
+                                                            "eligibility": "IneligibleNotProfessional"
+                                                        }
+                                                    }
+                                                },
+                                                "tweetDisplayType": "SelfThread"
+                                            },
+                                            "clientEventInfo": {
+                                                "details": {
+                                                    "conversationDetails": {
+                                                        "conversationSection": "HighQuality"
+                                                    },
+                                                    "timelinesDetails": {
+                                                        "controllerData": "DAACDAAEDAABCgABDQAKoCBDg8EKAAIAAAAABIBACAAAAAA="
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "entryId": "conversationthread-1813492767907295518-tweetcomposer--1",
+                                        "item": {
+                                            "itemContent": {
+                                                "itemType": "TimelineTweetComposer",
+                                                "__typename": "TimelineTweetComposer",
+                                                "composerDisplayType": "SelfThread",
+                                                "composerButtonText": "Add another post",
+                                                "composerButtonUrl": {
+                                                    "url": "twitter://post?in_reply_to_status_id=1813739500050472990",
+                                                    "urlType": "DeepLink"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                "displayType": "VerticalConversation",
+                                "clientEventInfo": {
+                                    "details": {
+                                        "conversationDetails": {
+                                            "conversationSection": "HighQuality"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "entryId": "tweetdetailrelatedtweets-258619721580134020",
+                            "sortIndex": "1",
+                            "content": {
+                                "entryType": "TimelineTimelineModule",
+                                "__typename": "TimelineTimelineModule",
+                                "items": [],
+                                "displayType": "Vertical",
+                                "header": {
+                                    "displayType": "Classic",
+                                    "text": "Discover more",
+                                    "socialContext": {
+                                        "type": "TimelineGeneralContext",
+                                        "contextType": "TextOnly",
+                                        "text": "Sourced from across X"
+                                    },
+                                    "sticky": true
+                                },
+                                "clientEventInfo": {
+                                    "component": "related_tweet",
+                                    "details": {
+                                        "conversationDetails": {
+                                            "conversationSection": "RelatedTweet"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "TimelineTerminateTimeline",
+                    "direction": "Top"
+                }
+            ],
+            "metadata": {
+                "reader_mode_config": {
+                    "is_reader_mode_available": true
+                }
+            }
+        }
+    }
+}
