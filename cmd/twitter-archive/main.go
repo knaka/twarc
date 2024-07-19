@@ -8,7 +8,6 @@ import (
 	"io"
 	"log"
 	"os"
-	osuser "os/user"
 	"time"
 
 	. "github.com/knaka/go-utils"
@@ -19,17 +18,27 @@ func main() {
 	timeout := flag.Duration("timeout", 10*time.Minute, "timeout")
 	outpath := flag.String("o", "", "outpath")
 	format := flag.String("f", "csv", "format")
-	flag.Parse()
 	page := flag.String("page", "", "page")
-	if *page == "" {
-		user, err := osuser.Current()
-		if err != nil {
-			log.Printf("%+v", err)
-			os.Exit(1)
-		}
-		page = &user.Username
+	query := flag.String("q", "", "query")
+	flag.Parse()
+	//if *page == "" {
+	//	user, err := osuser.Current()
+	//	if err != nil {
+	//		log.Printf("%+v", err)
+	//		os.Exit(1)
+	//	}
+	//	page = &user.Username
+	//}
+	startOpts := []twarc.StartOption{}
+	startOpts = append(startOpts, twarc.WithVerbose(*verbose))
+	startOpts = append(startOpts, twarc.WithTimeout(*timeout))
+	if *page != "" {
+		startOpts = append(startOpts, twarc.WithPage(*page))
 	}
-	tweets, err := twarc.Start(*page, twarc.WithVerbose(*verbose), twarc.WithTimeout(*timeout))
+	if *query != "" {
+		startOpts = append(startOpts, twarc.WithQuery(*query))
+	}
+	tweets, err := twarc.Start(startOpts...)
 	if err != nil {
 		log.Printf("%+v", err)
 		os.Exit(1)

@@ -75,3 +75,35 @@ func TestExtractTweetsFromTweetDetail(t *testing.T) {
 		})
 	}
 }
+
+func Test_extractTweetsFromSearchTimeline(t *testing.T) {
+	jsonStr := string(V(os.ReadFile(filepath.Join("testdata", "search-timeline.json"))))
+	type args struct {
+		jsonStr string
+	}
+	tests := []struct {
+		name             string
+		args             args
+		wantLegacyTweets int
+		wantErr          bool
+	}{
+		{
+			"Test 1",
+			args{jsonStr},
+			10,
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotLegacyTweets, err := extractTweetsFromSearchTimeline(tt.args.jsonStr)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("extractTweetsFromSearchTimeline() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if len(gotLegacyTweets) != tt.wantLegacyTweets {
+				t.Errorf("extractTweetsFromSearchTimeline() = %v, want %v", len(gotLegacyTweets), tt.wantLegacyTweets)
+			}
+		})
+	}
+}

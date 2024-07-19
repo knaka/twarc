@@ -69,6 +69,18 @@ type legacyTweet struct {
 	CreatedAtRuby        string `json:"created_at"`
 }
 
+func extractTweetsFromSearchTimeline(jsonStr string) (legacyTweets []*legacyTweet, err error) {
+	legacyTweetsJson := gjson.Get(jsonStr, "data.search_by_raw_query.search_timeline.timeline.instructions.#.entries.#.content.itemContent.tweet_results.result.legacy|@flatten")
+	legacyTweetsJson.ForEach(func(_, legacyTweetJson gjson.Result) (proceeds bool) {
+		var legacyTweetNew legacyTweet
+		V0(json.Unmarshal([]byte(legacyTweetJson.String()), &legacyTweetNew))
+		legacyTweets = append(legacyTweets, &legacyTweetNew)
+		return true
+	})
+	return
+
+}
+
 func extractTweetsFromTweetDetail(jsonStr string) (legacyTweets []*legacyTweet, err error) {
 	contentsJson := gjson.Get(jsonStr, "data.threaded_conversation_with_injections_v2.instructions.#.entries.#.content|@flatten")
 	contentsJson.ForEach(func(_, contentJson gjson.Result) (proceeds bool) {
@@ -126,9 +138,23 @@ type StartFuncParams struct {
 	Verbose  bool
 	Port     int
 	Duration time.Duration
+	Page     string
+	Query    string
 }
 
 type StartOption func(*StartFuncParams)
+
+func WithPage(page string) StartOption {
+	return func(opts *StartFuncParams) {
+		opts.Page = page
+	}
+}
+
+func WithQuery(query string) StartOption {
+	return func(opts *StartFuncParams) {
+		opts.Query = query
+	}
+}
 
 func WithVerbose(verbose bool) StartOption {
 	return func(opts *StartFuncParams) {
@@ -176,16 +202,8 @@ func Open(ctx context.Context, targetUrl string, matchRegex string, cb func(url 
 }
 
 func Start(
-	page string,
 	startOpts ...StartOption) (tweets []*Tweet, err error) {
 	defer Catch(&err)
-
-	url := neturl.URL{
-		Scheme: "https",
-		Host:   "x.com",
-		Path:   fmt.Sprintf("/%s", page),
-	}
-	targetUrl := url.String()
 
 	var legacyTweets []*legacyTweet
 	mu := sync.Mutex{}
@@ -197,6 +215,9 @@ func Start(
 	}
 	for _, startOpt := range startOpts {
 		startOpt(&funcParams)
+	}
+	if funcParams.Page == "" && funcParams.Query == "" {
+		return nil, fmt.Errorf("page or query must be specified")
 	}
 	var cdpCtxOpts []chromedp.ContextOption
 	if funcParams.Verbose {
@@ -229,39 +250,68 @@ func Start(
 	V0(chromedp.Run(ctx))
 	// `Run` has opened a new `page` target.
 	waitGroup.Add(1)
-	Open(ctx, targetUrl, `/UserTweets\?`, func(url string, data string) {
-		legacyTweetsNew, convIds := V2(extractTweetsFromUserTweets(data))
-		mu.Lock()
-		defer mu.Unlock()
-		legacyTweets = append(legacyTweets, legacyTweetsNew...)
-		if funcParams.Verbose {
-			go func() {
-				for _, t := range legacyTweetsNew {
-					log.Println(t.CreatedAtRuby, t.FullText)
-				}
-			}()
+	if funcParams.Page != "" {
+		url := neturl.URL{
+			Scheme: "https",
+			Host:   "x.com",
+			Path:   fmt.Sprintf("/%s", funcParams.Page),
 		}
-		// If some conversations have missing legacyTweets.
-		for _, convId := range convIds {
-			// Should handle cancel?
-			ctxChild, cancel := chromedp.NewContext(ctx)
-			Open(ctxChild, fmt.Sprintf("https://x.com/i/status/%d", convId), `/TweetDetail\?`, func(url string, data string) {
-				legacyTweetsNew := V(extractTweetsFromTweetDetail(data))
-				mu.Lock()
-				defer mu.Unlock()
-				legacyTweets = append(legacyTweets, legacyTweetsNew...)
-				if funcParams.Verbose {
-					go func() {
-						for _, t := range legacyTweetsNew {
-							log.Println(t.CreatedAtRuby, t.FullText)
-						}
-					}()
-				}
-				cancel()
-			})
-			waitGroup.Add(1)
+		targetUrl := url.String()
+		Open(ctx, targetUrl, `/UserTweets\?`, func(url string, data string) {
+			legacyTweetsNew, convIds := V2(extractTweetsFromUserTweets(data))
+			mu.Lock()
+			defer mu.Unlock()
+			legacyTweets = append(legacyTweets, legacyTweetsNew...)
+			if funcParams.Verbose {
+				go func() {
+					for _, t := range legacyTweetsNew {
+						log.Println(t.CreatedAtRuby, t.FullText)
+					}
+				}()
+			}
+			// If some conversations have missing legacyTweets.
+			for _, convId := range convIds {
+				// Should handle cancel?
+				ctxChild, cancel := chromedp.NewContext(ctx)
+				Open(ctxChild, fmt.Sprintf("https://x.com/i/status/%d", convId), `/TweetDetail\?`, func(url string, data string) {
+					legacyTweetsNew := V(extractTweetsFromTweetDetail(data))
+					mu.Lock()
+					defer mu.Unlock()
+					legacyTweets = append(legacyTweets, legacyTweetsNew...)
+					if funcParams.Verbose {
+						go func() {
+							for _, t := range legacyTweetsNew {
+								log.Println(t.CreatedAtRuby, t.FullText)
+							}
+						}()
+					}
+					cancel()
+				})
+				waitGroup.Add(1)
+			}
+		})
+	} else {
+		url := neturl.URL{
+			Scheme:   "https",
+			Host:     "x.com",
+			Path:     "search",
+			RawQuery: fmt.Sprintf("q=%s", neturl.QueryEscape(funcParams.Query)),
 		}
-	})
+		targetUrl := url.String()
+		Open(ctx, targetUrl, `/SearchTimeline\?`, func(url string, data string) {
+			legacyTweetsNew := V(extractTweetsFromSearchTimeline(data))
+			mu.Lock()
+			defer mu.Unlock()
+			legacyTweets = append(legacyTweets, legacyTweetsNew...)
+			if funcParams.Verbose {
+				go func() {
+					for _, t := range legacyTweetsNew {
+						log.Println(t.CreatedAtRuby, t.FullText)
+					}
+				}()
+			}
+		})
+	}
 	waitGroup.Wait()
 
 	// Update missing fields.
