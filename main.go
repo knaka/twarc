@@ -149,8 +149,6 @@ func WithPort(port int) StartOption {
 }
 
 func Open(ctx context.Context, targetUrl string, matchRegex string, cb func(url string, body string)) {
-	//cdpCtx := chromedp.FromContext(ctx)
-	//ctxExec := cdp.WithExecutor(ctx, cdpCtx.Target)
 	reMatch := regexp.MustCompile(matchRegex)
 	targetUrls := make(map[network.RequestID]string)
 	chromedp.ListenTarget(ctx, func(ev any) {
