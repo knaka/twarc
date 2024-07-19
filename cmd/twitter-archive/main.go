@@ -7,7 +7,6 @@ import (
 	"github.com/knaka/twarc"
 	"io"
 	"log"
-	neturl "net/url"
 	"os"
 	osuser "os/user"
 	"time"
@@ -30,16 +29,7 @@ func main() {
 		}
 		page = &user.Username
 	}
-	url := neturl.URL{
-		Scheme: "https",
-		Host:   "x.com",
-		Path:   fmt.Sprintf("/%s", *page),
-	}
-	tweets, err := twarc.Start(
-		url.String(),
-		twarc.WithVerbose(*verbose),
-		twarc.WithTimeout(*timeout),
-	)
+	tweets, err := twarc.Start(*page, twarc.WithVerbose(*verbose), twarc.WithTimeout(*timeout))
 	if err != nil {
 		log.Printf("%+v", err)
 		os.Exit(1)

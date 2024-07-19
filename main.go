@@ -176,10 +176,16 @@ func Open(ctx context.Context, targetUrl string, matchRegex string, cb func(url 
 }
 
 func Start(
-	targetUrl string,
-	startOpts ...StartOption,
-) (tweets []*Tweet, err error) {
+	page string,
+	startOpts ...StartOption) (tweets []*Tweet, err error) {
 	defer Catch(&err)
+
+	url := neturl.URL{
+		Scheme: "https",
+		Host:   "x.com",
+		Path:   fmt.Sprintf("/%s", page),
+	}
+	targetUrl := url.String()
 
 	var legacyTweets []*legacyTweet
 	mu := sync.Mutex{}
