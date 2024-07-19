@@ -15,11 +15,11 @@ import (
 
 func main() {
 	verbose := flag.Bool("v", false, "verbose")
-	timeout := flag.Duration("timeout", 10*time.Minute, "timeout")
-	outpath := flag.String("o", "", "outpath")
+	timeout := flag.Duration("t", 10*time.Minute, "timeout")
+	outpath := flag.String("o", "", "output path")
 	format := flag.String("f", "csv", "format")
-	page := flag.String("page", "", "page")
-	query := flag.String("q", "", "query")
+	page := flag.String("p", "", "page (username)")
+	query := flag.String("q", "", "query string")
 	flag.Parse()
 	//if *page == "" {
 	//	user, err := osuser.Current()
