@@ -18,5 +18,5 @@ $ twitter-archive -p 9222 -u user -o /path/to/output.json
 You can also fetch search results like https://x.com/explore by passing the query string.
 
 ```bash
-$ twitter-archive -q "from:user since:2020-01-01 until:2010-02-01" -o /path/to/output.json
+$ twitter-archive -q "from:user until:2010-02-01" -o /path/to/output.json
 ```
