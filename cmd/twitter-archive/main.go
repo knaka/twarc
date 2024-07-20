@@ -18,7 +18,8 @@ func main() {
 	timeout := flag.Duration("t", 10*time.Minute, "timeout")
 	outpath := flag.String("o", "", "output path")
 	format := flag.String("f", "csv", "format")
-	page := flag.String("p", "", "page (username)")
+	page := flag.String("u", "", "username")
+	port := flag.Int("p", 0, "port")
 	query := flag.String("q", "", "query string")
 	flag.Parse()
 	//if *page == "" {
@@ -32,6 +33,7 @@ func main() {
 	startOpts := []twarc.StartOption{}
 	startOpts = append(startOpts, twarc.WithVerbose(*verbose))
 	startOpts = append(startOpts, twarc.WithTimeout(*timeout))
+	startOpts = append(startOpts, twarc.WithPort(*port))
 	if *page != "" {
 		startOpts = append(startOpts, twarc.WithPage(*page))
 	}

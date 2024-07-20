@@ -7,7 +7,7 @@ toolchain go1.22.5
 require (
 	github.com/chromedp/cdproto v0.0.0-20240709201219-e202069cc16b
 	github.com/chromedp/chromedp v0.9.5
-	github.com/knaka/go-utils v0.0.2024071520
+	github.com/knaka/go-utils v0.0.2024072004
 	github.com/tidwall/gjson v1.17.1
 )
 

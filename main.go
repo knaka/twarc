@@ -11,8 +11,12 @@ import (
 	"github.com/tidwall/gjson"
 	"log"
 	neturl "net/url"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"reflect"
 	"regexp"
+	"runtime"
 	"slices"
 	"sort"
 	"strconv"
@@ -201,8 +205,53 @@ func Open(ctx context.Context, targetUrl string, matchRegex string, cb func(url 
 	V0(chromedp.Run(ctx, chromedp.Navigate(targetUrl)))
 }
 
-func Start(
-	startOpts ...StartOption) (tweets []*Tweet, err error) {
+func findChromePreferredExecPath() string {
+	var locations []string
+	switch runtime.GOOS {
+	case "darwin":
+		locations = []string{
+			// Mac
+			"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+			"/Applications/Chromium.app/Contents/MacOS/Chromium",
+		}
+	case "windows":
+		locations = []string{
+			// Windows
+			"chrome",
+			"chrome.exe", // in case PATHEXT is misconfigured
+			`C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`,
+			`C:\Program Files\Google\Chrome\Application\chrome.exe`,
+			filepath.Join(os.Getenv("USERPROFILE"), `AppData\Local\Google\Chrome\Application\chrome.exe`),
+			filepath.Join(os.Getenv("USERPROFILE"), `AppData\Local\Chromium\Application\chrome.exe`),
+		}
+	default:
+		locations = []string{
+			// Unix-like
+			"google-chrome",
+			"google-chrome-stable",
+			"google-chrome-beta",
+			"google-chrome-unstable",
+			"/usr/bin/google-chrome",
+			"/usr/local/bin/chrome",
+			"chrome",
+			"chromium",
+			"chromium-browser",
+			"/snap/bin/chromium",
+		}
+	}
+
+	for _, path := range locations {
+		found, err := exec.LookPath(path)
+		if err == nil {
+			return found
+		}
+	}
+	// Fall back to something simple and sensible, to give a useful error
+	// message.
+	return "google-chrome"
+}
+
+func Start(startOpts ...StartOption) (tweets []*Tweet, err error) {
 	defer Catch(&err)
 
 	var legacyTweets []*legacyTweet
@@ -210,7 +259,7 @@ func Start(
 
 	funcParams := StartFuncParams{
 		Verbose:  false,
-		Port:     9222,
+		Port:     0,
 		Duration: 10 * time.Minute,
 	}
 	for _, startOpt := range startOpts {
@@ -223,11 +272,22 @@ func Start(
 	if funcParams.Verbose {
 		cdpCtxOpts = append(cdpCtxOpts, chromedp.WithDebugf(log.Printf))
 	}
-	debugUrl := neturl.URL{
-		Scheme: "ws",
-		Host:   fmt.Sprintf("%s:%d", "127.0.0.1", funcParams.Port),
-	}
-	ctx, cancel := chromedp.NewRemoteAllocator(context.Background(), debugUrl.String())
+	ctx, cancel := TernaryF2(funcParams.Port == 0,
+		func() (context.Context, context.CancelFunc) {
+			return chromedp.NewExecAllocator(context.Background(),
+				chromedp.Flag("user-data-dir", ""),
+				// chromedp.findExecPath() prefers chromium over chrome.
+				chromedp.ExecPath(findChromePreferredExecPath()),
+			)
+		},
+		func() (context.Context, context.CancelFunc) {
+			cdpUrl := neturl.URL{
+				Scheme: "ws",
+				Host:   fmt.Sprintf("%s:%d", "127.0.0.1", funcParams.Port),
+			}
+			return chromedp.NewRemoteAllocator(context.Background(), cdpUrl.String())
+		},
+	)
 	defer cancel()
 	if funcParams.Duration > 0 {
 		ctx, cancel = context.WithTimeout(ctx, funcParams.Duration)
@@ -236,7 +296,7 @@ func Start(
 
 	waitGroup := sync.WaitGroup{}
 
-	ctx, cancel = chromedp.NewContext(ctx)
+	ctx, cancel = chromedp.NewContext(ctx, cdpCtxOpts...)
 	defer cancel()
 	// Not `ListenTarget` but `ListenBrowser` can detect a `page` target detached.
 	chromedp.ListenBrowser(ctx, func(ev any) {
@@ -247,7 +307,10 @@ func Start(
 	})
 
 	// `Run` to acquire the browser.
-	V0(chromedp.Run(ctx))
+	err = chromedp.Run(ctx)
+	if err != nil {
+		return
+	}
 	// `Run` has opened a new `page` target.
 	waitGroup.Add(1)
 	if funcParams.Page != "" {
@@ -272,7 +335,7 @@ func Start(
 			// If some conversations have missing legacyTweets.
 			for _, convId := range convIds {
 				// Should handle cancel?
-				ctxChild, cancel := chromedp.NewContext(ctx)
+				ctxChild, cancel := chromedp.NewContext(ctx, cdpCtxOpts...)
 				Open(ctxChild, fmt.Sprintf("https://x.com/i/status/%d", convId), `/TweetDetail\?`, func(url string, data string) {
 					legacyTweetsNew := V(extractTweetsFromTweetDetail(data))
 					mu.Lock()
